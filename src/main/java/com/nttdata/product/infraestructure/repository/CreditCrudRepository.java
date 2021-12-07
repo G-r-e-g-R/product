@@ -3,84 +3,107 @@ package com.nttdata.product.infraestructure.repository;
 import com.nttdata.product.application.CreditRepository;
 import com.nttdata.product.domain.Credit;
 import com.nttdata.product.infraestructure.model.dao.CreditDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 /**
- * CREDITCRUDREPOSITORY: Implementa las operaciones (CRUD) de los creditos (Credit)
+ * CREDITCRUDREPOSITORY.
+ * Implementa las operaciones (CRUD) de los creditos (Credit)
  */
 @Component
 public class CreditCrudRepository implements CreditRepository {
-    @Autowired
-    ICreditCrudRepository repository;
-    /*
-    create: Regitra los datos del credito
+    /**
+     * Repositorio del producto de crédito.
+     */
+    private final ICreditCrudRepository repository;
+
+    /**
+     * Constructor.
+     * @param iCreditCrudRepository
+     */
+    public CreditCrudRepository(
+            final ICreditCrudRepository iCreditCrudRepository) {
+        this.repository = iCreditCrudRepository;
+    }
+    /**
+     * Regitra los datos del credito.
+     * @param credit
+     * @return Mono<Credit>
      */
     @Override
-    public Mono<Credit> create(Credit credit) {
+    public Mono<Credit> create(final Credit credit) {
         return repository.save(mapCreditToCreditDao(credit))
                 .map(this::mapCreditDaoToCredit);
     }
-    /*
-    update: Actualiza los datos del credito
+    /**
+     * Actualiza los datos del credito.
+     * @param id
+     * @param credit
+     * @return Mono<Credit>
      */
     @Override
-    public Mono<Credit> update(String id, Credit credit) {
+    public Mono<Credit> update(final String id, final Credit credit) {
         return repository.findById(id)
-                .flatMap( p ->create(mapCreditDaoToCredit(p,credit)));
+                .flatMap(p -> create(mapCreditDaoToCredit(p, credit)));
     }
-    /*
-    delete: Elimina los datos del credito
+    /**
+     * Elimina los datos del credito.
+     * @param id
+     * @return Mono<CreditDao>
      */
     @Override
-    public Mono<CreditDao> delete(String id) {
+    public Mono<CreditDao> delete(final String id) {
         return repository.findById(id)
                 .flatMap(p -> repository.deleteById(p.getId()).thenReturn(p));
     }
-    /*
-    findById: Busca por el Id los datos de un credito
+    /**
+     * Busca por el Id los datos de un credito.
+     * @param id
+     * @return Mono<Credit>
      */
     @Override
-    public Mono<Credit> findById(String id) {
-        return repository.findById( (id))
-                .map( this::mapCreditDaoToCredit);
+    public Mono<Credit> findById(final String id) {
+        return repository.findById((id))
+                .map(this::mapCreditDaoToCredit);
     }
-    /*
-    findAll: Busca  los datos de todos  los credito
+    /**
+     * Busca  los datos de todos  los credito.
+     * @return Flux<Credit>
      */
     @Override
     public Flux<Credit> findAll() {
         return repository.findAll()
                 .map(this::mapCreditDaoToCredit);
     }
-
-    /*
-    mapCreditToCreditDao: Crea un clase CreditDao y asigna los datos de Credit
+    /**
+     * Crea un clase CreditDao y asigna los datos de Credit.
+     * @param credit
+     * @return CreditDao
      */
-    private CreditDao mapCreditToCreditDao (Credit credit){
+    private CreditDao mapCreditToCreditDao(final Credit credit) {
         CreditDao creditDao = new CreditDao();
-        creditDao.setCardNumber(credit.getCardNumber());
-        creditDao.setCreditType(credit.getCreditType());
-        creditDao.setId(credit.getId());
-        creditDao.setMaximumNumberCredit(credit.getMaximumNumberCredit());
+        BeanUtils.copyProperties(credit, creditDao);
         return creditDao;
     }
-    /*
-    mapCreditDaoToCredit: Crea un clase CreditDao y asigna los datos de Credit
+    /**
+     * Crea un clase CreditDao y asigna los datos de Credit.
+     * @param creditDao
+     * @return Credit
      */
-    private Credit mapCreditDaoToCredit (CreditDao creditDao){
+    private Credit mapCreditDaoToCredit(final CreditDao creditDao) {
         Credit credit = new Credit();
-        credit.setCardNumber(creditDao.getCardNumber());
-        credit.setCreditType(creditDao.getCreditType());
-        credit.setId(creditDao.getId());
-        credit.setMaximumNumberCredit(creditDao.getMaximumNumberCredit());
+        BeanUtils.copyProperties(creditDao, credit);
         return credit;
     }
-    /*
-    mapCreditDaoToCredit: Asigna el Id de CreditDao a Credit
-    */
-    private Credit mapCreditDaoToCredit (CreditDao creditDao,  Credit credit){
+    /**
+     * Asigna el Id de CreditDao a Credit.
+     * @param creditDao
+     * @param credit
+     * @return Credit
+     */
+    private Credit mapCreditDaoToCredit(final CreditDao creditDao,
+                                         final Credit credit) {
         credit.setId(creditDao.getId());
         return credit;
     }

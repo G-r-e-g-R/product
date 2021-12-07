@@ -6,15 +6,25 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import org.springframework.data.annotation.Id;
 /**
- * ACREDITDAO: Contiene los atributos del documento Credito (Credit) para la persistencia
+ * ACREDITDAO.
+ * Contiene los atributos del documento Credito (Credit) para la persistencia
  */
 @Data
 @Document("credit")
 public class CreditDao {
+    /**
+     * Codigo del producto de crédito.
+     */
     @Id
     private String id;
-    private CreditType creditType;          // Tipo de Credito: Personal, Empresarial, etc
-    private int maximumNumberCredit;        // Numero maximo de creditos 0: Sin limites.
-    private String cardNumber;              // Numero de Tarjeta de credito
+    /**
+     * Tipo de Credito: Personal, Empresarial, etc.
+     */
+    private CreditType creditType;
+    /**
+     * Numero maximo de creditos 0: Sin limites.
+     */
+    private int maximumNumberCredit;
+
 
 }

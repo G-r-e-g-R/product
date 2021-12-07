@@ -9,11 +9,23 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
 @EnableEurekaClient
-@OpenAPIDefinition(info = @Info(title = "APIs", version = "1.0", description = "Documentation APIs v1.0"))
+@OpenAPIDefinition(info = @Info(title = "APIs",
+        version = "1.0",
+        description = "Documentation APIs v1.0"))
 public class ProductApplication {
+    /**
+     * Constructor protegido.
+     */
+    protected  ProductApplication() {
+        super();
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(ProductApplication.class, args);
-	}
+    /**
+     * Clase principal de Producto.
+     * @param args
+     */
+    public static void main(final String[] args) {
+        SpringApplication.run(ProductApplication.class, args);
+    }
 
 }
