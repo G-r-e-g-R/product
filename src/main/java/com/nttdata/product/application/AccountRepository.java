@@ -29,7 +29,7 @@ public interface AccountRepository {
      * @param id
      * @return Mono<AccountDao>
      */
-    Mono<AccountDao> delete(String id);
+    Mono<Void> delete(String id);
 
     /**
      * Búsqueda de un producto de cuenta bancaria.

@@ -20,7 +20,7 @@ public class CreditCrudRepository implements CreditRepository {
 
     /**
      * Constructor.
-     * @param iCreditCrudRepository
+     * @param iCreditCrudRepository repositorio.
      */
     public CreditCrudRepository(
             final ICreditCrudRepository iCreditCrudRepository) {
@@ -28,7 +28,7 @@ public class CreditCrudRepository implements CreditRepository {
     }
     /**
      * Regitra los datos del credito.
-     * @param credit
+     * @param credit credito.
      * @return Mono<Credit>
      */
     @Override
@@ -38,8 +38,8 @@ public class CreditCrudRepository implements CreditRepository {
     }
     /**
      * Actualiza los datos del credito.
-     * @param id
-     * @param credit
+     * @param id codigo.
+     * @param credit credito.
      * @return Mono<Credit>
      */
     @Override
@@ -49,17 +49,17 @@ public class CreditCrudRepository implements CreditRepository {
     }
     /**
      * Elimina los datos del credito.
-     * @param id
+     * @param id codigo.
      * @return Mono<CreditDao>
      */
     @Override
-    public Mono<CreditDao> delete(final String id) {
+    public Mono<Void> delete(final String id) {
         return repository.findById(id)
-                .flatMap(p -> repository.deleteById(p.getId()).thenReturn(p));
+                .flatMap(p -> repository.deleteById(p.getId()));
     }
     /**
      * Busca por el Id los datos de un credito.
-     * @param id
+     * @param id codigo.
      * @return Mono<Credit>
      */
     @Override
@@ -78,7 +78,7 @@ public class CreditCrudRepository implements CreditRepository {
     }
     /**
      * Crea un clase CreditDao y asigna los datos de Credit.
-     * @param credit
+     * @param credit credito.
      * @return CreditDao
      */
     private CreditDao mapCreditToCreditDao(final Credit credit) {
@@ -88,7 +88,7 @@ public class CreditCrudRepository implements CreditRepository {
     }
     /**
      * Crea un clase CreditDao y asigna los datos de Credit.
-     * @param creditDao
+     * @param creditDao credito Dao.
      * @return Credit
      */
     private Credit mapCreditDaoToCredit(final CreditDao creditDao) {
@@ -98,8 +98,8 @@ public class CreditCrudRepository implements CreditRepository {
     }
     /**
      * Asigna el Id de CreditDao a Credit.
-     * @param creditDao
-     * @param credit
+     * @param creditDao credito Dao.
+     * @param credit credito.
      * @return Credit
      */
     private Credit mapCreditDaoToCredit(final CreditDao creditDao,

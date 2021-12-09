@@ -11,29 +11,29 @@ import reactor.core.publisher.Mono;
 public interface CreditRepository {
     /**
      * Crea un producto de credito.
-     * @param credit
+     * @param credit credito.
      * @return Mono<Credit>
      */
     Mono<Credit> create(Credit credit);
 
     /**
      * Actualiza un producto de credito.
-     * @param id
-     * @param credit
+     * @param id codigo.
+     * @param credit credito.
      * @return Mono<Credit>
      */
     Mono<Credit> update(String id, Credit credit);
 
     /**
      * Elimina un producto de credito.
-     * @param id
+     * @param id codigo.
      * @return Mono<CreditDao>
      */
-    Mono<CreditDao> delete(String id);
+    Mono<Void> delete(String id);
 
     /**
      * Búsqueda de un producto de credito por Id.
-     * @param id
+     * @param id codigo.
      * @return Mono<Credit>
      */
     Mono<Credit> findById(String id);

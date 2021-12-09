@@ -4,6 +4,8 @@ import com.nttdata.product.application.CreditOperations;
 import com.nttdata.product.domain.Credit;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,48 +35,67 @@ public class CreditContoller {
      * @return Flux<Credit>
      */
     @GetMapping
-    public Flux<Credit> getAll() {
-        return creditOperations.findAll();
+    public Mono<ResponseEntity<Flux<Credit>>> getAll() {
+        return Mono.just(
+                ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(creditOperations.findAll()));
     }
 
     /**
      * Busqueda de un producto de crédito por Id.
-     * @param id
+     * @param id codigo.
      * @return Mono<Credit>
      */
     @GetMapping("/{id}")
-    public Mono<Credit> getById(@PathVariable final String id) {
-        return creditOperations.findById(id);
+    public Mono<ResponseEntity<Credit>> getById(@PathVariable final String id) {
+        return creditOperations.findById(id)
+                .map(c -> ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(c))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**
      * Registra un producto de crédito.
-     * @param credit
+     * @param credit credito.
      * @return Mono<Credit>
      */
     @PostMapping
-    public Mono<Credit> post(@RequestBody final Credit credit) {
-        return creditOperations.create(credit);
+    public Mono<ResponseEntity<Credit>> post(@RequestBody final Credit credit) {
+        return creditOperations.create(credit)
+                .map(c -> ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(c))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**
      * Actualiza un producto de crédito.
-     * @param id
-     * @param credit
+     * @param id codigo.
+     * @param credit credito.
      * @return Mono<Credit>
      */
     @PutMapping("/{id}")
-    public Mono<Credit> put(@PathVariable final String id,
+    public Mono<ResponseEntity<Credit>> put(@PathVariable final String id,
                             @RequestBody final Credit credit) {
-        return creditOperations.update(id, credit);
+        return creditOperations.update(id, credit)
+                .map(c -> ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(c))
+                .defaultIfEmpty(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**
      * Elimina un producto de crédito.
-     * @param id
+     * @param id codigo.
      */
     @DeleteMapping("/{id}")
-    public  void delete(@PathVariable final String id) {
-        creditOperations.delete(id);
+    public  Mono<ResponseEntity<Void>> delete(@PathVariable final String id) {
+        return creditOperations.delete(id)
+                .map(c -> ResponseEntity
+                        .noContent()
+                        .<Void>build())
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 }

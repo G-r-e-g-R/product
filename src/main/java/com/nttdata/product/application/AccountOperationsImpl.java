@@ -49,8 +49,8 @@ public class AccountOperationsImpl implements  AccountOperations {
      * @param id
      */
     @Override
-    public void delete(final String id) {
-        repository.delete(id);
+    public Mono<Void> delete(final String id) {
+        return repository.delete(id);
     }
 
     /**

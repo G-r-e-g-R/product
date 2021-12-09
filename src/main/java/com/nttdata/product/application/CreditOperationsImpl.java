@@ -18,7 +18,7 @@ public class CreditOperationsImpl implements CreditOperations {
 
     /**
      * Constructor.
-     * @param creditRepository
+     * @param creditRepository repositorio.
      */
     public CreditOperationsImpl(final CreditRepository creditRepository) {
         this.repository = creditRepository;
@@ -26,7 +26,7 @@ public class CreditOperationsImpl implements CreditOperations {
 
     /**
      * Crea un producto de credito.
-     * @param credit
+     * @param credit credito.
      * @return Mono<Credit>
      */
     @Override
@@ -36,8 +36,8 @@ public class CreditOperationsImpl implements CreditOperations {
 
     /**
      * Actualiza un producto de credito.
-     * @param id
-     * @param credit
+     * @param id codigo.
+     * @param credit credito.
      * @return Mono<Credit>
      */
     @Override
@@ -47,17 +47,17 @@ public class CreditOperationsImpl implements CreditOperations {
 
     /**
      * Elimina un producto de credito.
-     * @param id
+     * @param id codigo.
      * @return Mono<CreditDao>
      */
     @Override
-    public Mono<CreditDao> delete(final String id) {
+    public Mono<Void> delete(final String id) {
         return repository.delete(id);
     }
 
     /**
      * Búsqueda de un producto de credito por Id.
-     * @param id
+     * @param id codigo.
      * @return Mono<Credit>
      */
     @Override

@@ -27,7 +27,7 @@ public interface AccountOperations {
      * Elimina un producto de cuenta bancaria.
      * @param id
      */
-    void delete(String id);
+    Mono<Void> delete(String id);
 
     /**
      * Búsqueda de un producto de cuenta bancaria por Id.

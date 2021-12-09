@@ -54,9 +54,9 @@ public class AccountCrudRepository implements AccountRepository {
      * @return Mono<AccountDao>
      */
     @Override
-    public Mono<AccountDao> delete(final String id) {
+    public Mono<Void> delete(final String id) {
         return repository.findById(id)
-                .flatMap(p -> repository.deleteById(p.getId()).thenReturn(p));
+                .flatMap(p -> repository.delete(p));
     }
     /**
      * Busca por el Id los datos de la cuenta.
